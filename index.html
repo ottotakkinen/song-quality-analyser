@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <title>Song Quality Analyser</title>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"
+      integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <h1>Song Quality Analyser</h1>
+    <div class="container">
+      <div class="" id="drop-area">
+        <input type="file" accept="audio/*" />
+        <h2>Drag and Drop your audio file here.</h2>
+      </div>
+    </div>
+
+    <div class="quality-container container">
+      <h2>Song Quality</h2>
+      <div class="info-container">
+        <p class="percentage" id="percentage"></p>
+        <meter
+          class=""
+          id="meter"
+          max="1.0"
+          min="0.3"
+          value="0"
+          high=".9"
+          low=".6"
+          optimum="1.0"
+        ></meter>
+        <div id="loading-spinner" class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Waveform</h2>
+      <div class="canvas-container" id="canvas-container">
+        <canvas id="canvas" width="200" height="200"></canvas>
+        <div id="loading-spinner2" class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/meyda"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
