@@ -1,6 +1,6 @@
 # Audio File Quality Analyser
 
-Audio File Quality Analyser is a simple website to determine whether an audio file is suitable for use. Analysis is done client side which means the website also works in offline mode (in the future).
+Audio File Quality Analyser is a simple website to determine whether an audio file is suitable for use. Analysis is done client side which means that the website also works in offline mode (in the future).
 
 This is a hobby project for me to check my audio files before adding them to my DJ library.
 
