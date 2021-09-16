@@ -9,7 +9,7 @@ This is a hobby project for me to check my audio files before adding them to my 
 
 This project is live on Netlify here:
 
-[http://song-analyser.netlify.com](http://song-analyser.netlify.com "Live Site")
+[https://song-quality.netlify.app/](https://song-quality.netlify.app/ "Live Site")
 
 
 ## Technologies
