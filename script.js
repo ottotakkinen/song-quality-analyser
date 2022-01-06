@@ -2,24 +2,22 @@ const margin = 10;
 const chunkFactor = 600;
 
 const dropArea = document.getElementById('drop-area');
-const canvasLoader = document.getElementById('loading-spinner');
-const canvasLoader2 = document.getElementById('loading-spinner2');
 const meter = document.getElementById('meter');
 const percentage = document.getElementById('percentage');
 
 let loading = false;
 
-const canvas = document.querySelector('canvas');
-const canvas2 = document.querySelector('canvas2');
-const ctx = canvas.getContext('2d');
-const { width, height } = canvas;
-const centerHeight = Math.ceil(height / 2);
-const scaleFactor = (height - margin * 2) / 2;
-
 const reader = new FileReader();
 const offlineAudioContext = new OfflineAudioContext({
   length: 1,
   sampleRate: 44100,
+});
+
+let wavesurfer = WaveSurfer.create({
+  container: '#waveform',
+  normalize: true,
+  responsive: true,
+  waveColor: '#9b37c5',
 });
 
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
@@ -28,7 +26,7 @@ const offlineAudioContext = new OfflineAudioContext({
 
 function preventDefaults(e) {
   e.preventDefault();
-  e.stopPropagation();
+  // e.stopPropagation();
 }
 
 ['dragenter', 'dragover'].forEach((eventName) => {
@@ -46,34 +44,45 @@ function unhighlight(e) {
   dropArea.classList.remove('highlight');
 }
 
-dropArea.addEventListener('drop', handleDrop, false);
+dropArea.addEventListener('drop', (e) => {
+  const files = e.dataTransfer.files;
 
-function handleDrop(e) {
-  const dt = e.dataTransfer;
-  const files = dt.files;
+  handleFiles(files);
+});
+
+document.getElementById('fileInput').addEventListener('change', function (e) {
+  const files = this.files;
+
+  handleFiles(files);
+});
+
+const handleFiles = (files) => {
+  fileInput.files = files;
 
   const file = files[0];
+  console.log('file: ', file);
 
   reader.readAsArrayBuffer(file);
-}
+};
 
 reader.addEventListener('loadstart', () => {
-  // canvasLoader.classList.add('loading');
-  // canvasLoader2.classList.add('loading');
-  canvas.classList.remove('ready');
   loading = true;
 });
 
-reader.addEventListener('load', () => {
-  // console.log('loaded');
-  const result = reader.result;
-  handleAudioData(result);
+reader.addEventListener('load', (e) => {
+  // Create a Blob providing as first argument a typed array with the file buffer
+  var blob = new window.Blob([new Uint8Array(e.target.result)]);
+  // Load the blob into Wavesurfer
+  wavesurfer.loadBlob(blob);
+
+  // handle data as an array buffer
+  handleAudioData(reader.result);
 });
 
 const handleAudioData = async (arrayBuffer) => {
   const audioBuffer = await offlineAudioContext.decodeAudioData(arrayBuffer);
-  const float32Array = audioBuffer.getChannelData(0);
-  drawToCanvas(float32Array);
+  // const float32Array = audioBuffer.getChannelData(0);
+  // drawToCanvas(float32Array);
   analyseAudio(audioBuffer);
 };
 
@@ -110,38 +119,3 @@ const analyseAudio = (audioBuffer) => {
 
   // console.log(highestFreq);
 };
-
-async function drawToCanvas(float32Array) {
-  const chunkSize = float32Array.length / chunkFactor;
-  const array = [];
-
-  let i = 0;
-  const length = float32Array.length;
-  while (i < length) {
-    array.push(
-      float32Array.slice(i, (i += chunkSize)).reduce(function (total, value) {
-        return Math.max(total, Math.abs(value));
-      })
-    );
-  }
-
-  canvas.width = Math.ceil(float32Array.length / chunkSize + margin * 2);
-
-  for (let index in array) {
-    ctx.strokeStyle = 'black';
-    ctx.beginPath();
-    ctx.moveTo(
-      margin + Number(index),
-      centerHeight - array[index] * scaleFactor
-    );
-    ctx.lineTo(
-      margin + Number(index),
-      centerHeight + array[index] * scaleFactor
-    );
-    ctx.stroke();
-  }
-  // canvasLoader.classList.remove('loading');
-  // canvasLoader2.classList.remove('loading');
-  canvas.classList.add('ready');
-  loading = false;
-}

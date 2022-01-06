@@ -22,51 +22,40 @@
     ></script>
   </head>
   <body>
-    <h1>Song Quality Analyser</h1>
     <div class="container">
-      <div class="" id="drop-area">
-        <input type="file" accept="audio/*" />
-        <h2>Drag and Drop your audio file here.</h2>
-      </div>
-    </div>
-
-    <div class="quality-container container">
-      <h2>Song Quality</h2>
       <div class="info-container">
-        <p class="percentage" id="percentage"></p>
-        <meter
-          class=""
-          id="meter"
-          max="1.0"
-          min="0.3"
-          value="0"
-          high=".9"
-          low=".6"
-          optimum="1.0"
-        ></meter>
-        <div id="loading-spinner" class="lds-ring">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        <h1>Audio File Analyzer</h1>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque harum
+        autem quia voluptatibus pariatur accusamus labore dolorem veritatis
+        eveniet sed.
       </div>
-    </div>
-
-    <div class="container">
-      <h2>Waveform</h2>
-      <div class="canvas-container" id="canvas-container">
-        <canvas id="canvas" width="200" height="200"></canvas>
-        <div id="loading-spinner2" class="lds-ring">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <div class="drop-area-container">
+        <label labelFor="fileInput" class="" id="drop-area">
+          <h2>Drag and Drop your audio file here</h2>
+          <p>or click to choose a file</p>
+          <input type="file" accept="audio/*" id="fileInput" />
+        </label>
       </div>
+      <div class="stats-container">
+        <div>
+          <meter
+            class=""
+            id="meter"
+            max="1.0"
+            min="0.3"
+            value="0"
+            high=".9"
+            low=".6"
+            optimum="1.0"
+          ></meter>
+        </div>
+        <div><p class="percentage" id="percentage"></p></div>
+      </div>
+      <div class="waveform-container" id="waveform"></div>
     </div>
 
     <script src="https://unpkg.com/meyda"></script>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
