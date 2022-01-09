@@ -3,7 +3,8 @@ const chunkFactor = 600;
 
 const dropArea = document.getElementById('drop-area');
 const meter = document.getElementById('meter');
-const percentage = document.getElementById('percentage');
+const percentageEl = document.getElementById('percentage');
+const frequencyEl = document.getElementById('frequency');
 
 let loading = false;
 
@@ -13,12 +14,35 @@ const offlineAudioContext = new OfflineAudioContext({
   sampleRate: 44100,
 });
 
-let wavesurfer = WaveSurfer.create({
-  container: '#waveform',
-  normalize: true,
-  responsive: true,
-  waveColor: '#9b37c5',
-});
+WaveSurfer.util
+  .fetchFile({ url: 'colordata.json', responseType: 'json' })
+  .on('success', (colorMap) => {
+    createWaveSurfer(colorMap);
+  });
+
+// fetch('./colordata.json')
+//   .then((response) => response.json())
+//   .then((data) => (colorMap = data));
+// const colorMap = JSON.parse(colordata);
+let wavesurfer;
+const createWaveSurfer = (colorMap) => {
+  wavesurfer = WaveSurfer.create({
+    container: '#waveform',
+    normalize: true,
+    responsive: true,
+    waveColor: '#9b37c5',
+    height: 0,
+    plugins: [
+      WaveSurfer.spectrogram.create({
+        container: '#wave-spectrogram',
+        labels: true,
+        colorMap: colorMap,
+        height: 256,
+        responsive: true,
+      }),
+    ],
+  });
+};
 
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults, false);
@@ -61,6 +85,7 @@ const handleFiles = (files) => {
 
   const file = files[0];
   console.log('file: ', file);
+  document.getElementById('filename').innerText = file.name;
 
   reader.readAsArrayBuffer(file);
 };
@@ -94,6 +119,8 @@ const analyseAudio = (audioBuffer) => {
   for (let i = 0; i < audioBuffer.sampleRate * 5; i += 512) {
     audioBuffer.copyFromChannel(signal, 0, i);
 
+    // console.log(signal);
+
     const floatArray = Meyda.extract('amplitudeSpectrum', signal);
 
     for (let i = 0; i < floatArray.length; i++) {
@@ -105,15 +132,16 @@ const analyseAudio = (audioBuffer) => {
 
   const bandWidth = 43.06640625 * 2;
 
-  const filteredMaximums = maximums
-    .reverse()
-    .map((amp) => (amp < 0.02 ? 0 : amp))
-    .reverse();
+  const filteredMaximums = maximums.map((amp) => (amp < 0.01 ? 0 : amp));
+  // .reverse();
+
+  // console.log(filteredMaximums);
 
   const highestFreq = filteredMaximums.indexOf(0) * bandWidth;
 
   meter.value = highestFreq / 22050;
-  percentage.innerText = `${Math.round((highestFreq / 1000) * 100) / 100}kHz, ${
+  frequencyEl.innerText = `${Math.round((highestFreq / 1000) * 100) / 100}kHz`;
+  percentageEl.innerText = `${
     (Math.round((highestFreq / 22050) * 100) / 100) * 100
   }%`;
 

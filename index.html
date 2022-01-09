@@ -20,14 +20,18 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <!-- wavesurfer.js -->
+    <script src="https://unpkg.com/wavesurfer.js/dist/wavesurfer.js"></script>
+
+    <!-- spectrogram format renderer -->
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.spectrogram.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="info-container">
         <h1>Audio File Analyzer</h1>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque harum
-        autem quia voluptatibus pariatur accusamus labore dolorem veritatis
-        eveniet sed.
+        Simple and fast client-side analysis of audio file quality. >90%
+        recommended for club play.
       </div>
       <div class="drop-area-container">
         <label labelFor="fileInput" class="" id="drop-area">
@@ -36,26 +40,35 @@
           <input type="file" accept="audio/*" id="fileInput" />
         </label>
       </div>
+      <div class="filename"><h2 id="filename">testinimi</h2></div>
       <div class="stats-container">
         <div>
+          <p>Highest found frequency</p>
+          <p class="frequency stat-text" id="frequency"></p>
+        </div>
+        <div>
+          <p>Compared to 320kbps mp3</p>
+          <p class="percentage stat-text" id="percentage"></p>
           <meter
             class=""
             id="meter"
             max="1.0"
-            min="0.3"
+            min="0"
             value="0"
             high=".9"
             low=".6"
             optimum="1.0"
           ></meter>
         </div>
-        <div><p class="percentage" id="percentage"></p></div>
+        <div>Approximated true quality</div>
       </div>
       <div class="waveform-container" id="waveform"></div>
+      <div class="wave-spectrogram" id="wave-spectrogram"></div>
     </div>
 
     <script src="https://unpkg.com/meyda"></script>
-    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <!-- <script src="https://unpkg.com/wavesurfer.js"></script> -->
+    <script type="text/javascript" src="colordata.json"></script>
     <script src="script.js"></script>
   </body>
 </html>
