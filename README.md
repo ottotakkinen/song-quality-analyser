@@ -17,6 +17,8 @@ This project is live on Netlify here:
 HTML/CSS/JS
 
 [Meyda.js](https://meyda.js.org/) for Fast Fourier Transforms client side
+[WaveSurfer.js](https://wavesurfer-js.org/) for Spectrogram
+
 ## About
 
 This project is mostly for .mp3 files, since lossless audio extensions don't suffer from the same problems. The main idea is to be able to drop an mp3 file from a DJ pool or similar service to the website to filter out bad quality files.
@@ -29,8 +31,6 @@ Analysis of different mp3 bitrates by Søren B. Nørgaard [here](http://soerenbn
 
 ## Todo
 
-- Refactoring everything
-- UI design
-- Waveform optimization
 - Fixing randomly grading files lower than they are
+- Loaders while analysing
 
