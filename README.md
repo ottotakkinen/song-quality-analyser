@@ -16,7 +16,7 @@ This project is live on Netlify here:
 
 HTML/CSS/JS
 
-[Meyda.js](https://meyda.js.org/) for Fast Fourier Transforms client side
+[Meyda.js](https://meyda.js.org/) for Fast Fourier Transforms client side  
 [WaveSurfer.js](https://wavesurfer-js.org/) for Spectrogram
 
 ## About
