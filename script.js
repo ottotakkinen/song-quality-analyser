@@ -6,7 +6,16 @@ const meter = document.getElementById('meter');
 const percentageEl = document.getElementById('percentage');
 const frequencyEl = document.getElementById('frequency');
 
-let loading = false;
+const fileNameEl = document.getElementById('filename-container');
+const statsContainerEl = document.getElementById('stats-container');
+const waveformContainerEl = document.getElementById('waveform');
+const spectogramContainerEl = document.getElementById('wave-spectrogram');
+
+// On load hide the filename, stats and waveform containers
+fileNameEl.style.display = 'none';
+statsContainerEl.style.display = 'none';
+waveformContainerEl.style.display = 'none';
+spectogramContainerEl.style.display = 'none';
 
 const reader = new FileReader();
 const offlineAudioContext = new OfflineAudioContext({
@@ -20,18 +29,14 @@ WaveSurfer.util
     createWaveSurfer(colorMap);
   });
 
-// fetch('./colordata.json')
-//   .then((response) => response.json())
-//   .then((data) => (colorMap = data));
-// const colorMap = JSON.parse(colordata);
 let wavesurfer;
+
 const createWaveSurfer = (colorMap) => {
   wavesurfer = WaveSurfer.create({
     container: '#waveform',
     normalize: true,
     responsive: true,
     waveColor: '#9b37c5',
-    height: 0,
     plugins: [
       WaveSurfer.spectrogram.create({
         container: '#wave-spectrogram',
@@ -45,13 +50,8 @@ const createWaveSurfer = (colorMap) => {
 };
 
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
-  dropArea.addEventListener(eventName, preventDefaults, false);
+  dropArea.addEventListener(eventName, (e) => e.preventDefault(), false);
 });
-
-function preventDefaults(e) {
-  e.preventDefault();
-  // e.stopPropagation();
-}
 
 ['dragenter', 'dragover'].forEach((eventName) => {
   dropArea.addEventListener(eventName, highlight, false);
@@ -82,11 +82,8 @@ document.getElementById('fileInput').addEventListener('change', function (e) {
 
 const handleFiles = (files) => {
   fileInput.files = files;
-
   const file = files[0];
-  console.log('file: ', file);
   document.getElementById('filename').innerText = file.name;
-
   reader.readAsArrayBuffer(file);
 };
 
@@ -119,8 +116,6 @@ const analyseAudio = (audioBuffer) => {
   for (let i = 0; i < audioBuffer.sampleRate * 5; i += 512) {
     audioBuffer.copyFromChannel(signal, 0, i);
 
-    // console.log(signal);
-
     const floatArray = Meyda.extract('amplitudeSpectrum', signal);
 
     for (let i = 0; i < floatArray.length; i++) {
@@ -133,9 +128,6 @@ const analyseAudio = (audioBuffer) => {
   const bandWidth = 43.06640625 * 2;
 
   const filteredMaximums = maximums.map((amp) => (amp < 0.01 ? 0 : amp));
-  // .reverse();
-
-  // console.log(filteredMaximums);
 
   const highestFreq = filteredMaximums.indexOf(0) * bandWidth;
 
@@ -145,5 +137,11 @@ const analyseAudio = (audioBuffer) => {
     (Math.round((highestFreq / 22050) * 100) / 100) * 100
   }%`;
 
-  // console.log(highestFreq);
+  // When ready, display stats
+  fileNameEl.style.display = 'initial';
+  statsContainerEl.style.display = 'flex';
+  waveformContainerEl.style.removeProperty('display');
+  spectogramContainerEl.style.removeProperty('display');
+
+  // TODO: loader while calculating
 };

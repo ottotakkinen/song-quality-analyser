@@ -30,7 +30,7 @@
     <div class="container">
       <div class="info-container">
         <h1>Audio File Analyzer</h1>
-        Simple and fast client-side analysis of audio file quality. >90%
+        Simple and fast client-side analysis of audio file quality.<br />>90%
         recommended for club play.
       </div>
       <div class="drop-area-container">
@@ -40,8 +40,10 @@
           <input type="file" accept="audio/*" id="fileInput" />
         </label>
       </div>
-      <div class="filename"><h2 id="filename">testinimi</h2></div>
-      <div class="stats-container">
+      <div class="filename" id="filename-container">
+        <h2 id="filename">testinimi</h2>
+      </div>
+      <div class="stats-container" id="stats-container">
         <div>
           <p>Highest found frequency</p>
           <p class="frequency stat-text" id="frequency"></p>
@@ -60,7 +62,10 @@
             optimum="1.0"
           ></meter>
         </div>
-        <div>Approximated true quality</div>
+        <div>
+          <p>Approximated true quality</p>
+          <p>coming soon...</p>
+        </div>
       </div>
       <div class="waveform-container" id="waveform"></div>
       <div class="wave-spectrogram" id="wave-spectrogram"></div>
